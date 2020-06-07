@@ -10,11 +10,11 @@ root = Tk()
 
 root.geometry('500x555')
 
-username_label = Label(root, text='Username', font = ('Times New Roman', 16, 'bold')).place(x=115, y=30)
+Label(root, text='Username', font = ('Times New Roman', 16, 'bold')).place(x=115, y=30)
 username_entry = Entry(root, width=45)
 username_entry.place(x=115, y=60)
 
-password_label = Label(root, text='Password', font = ('Times New Roman', 16, 'bold')).place(x=115, y=110)
+Label(root, text='Password', font = ('Times New Roman', 16, 'bold')).place(x=115, y=110)
 password_entry = Entry(root, show='*', width=45)
 password_entry.place(x=115, y=140)
 
@@ -23,21 +23,21 @@ def delete_entries():
     password_entry.delete(0, 'end')
 
 def send_otp():
-    usrname = username_entry.get()
-    passwd = password_entry.get()
-    if len(usrname) == 0 or len(passwd) == 0:
+    username = username_entry.get()
+    password = password_entry.get()
+    if len(username) == 0 or len(password) == 0:
         messagebox.showwarning('Warning', "Please enter Username or Password!")
     else:
-        user_pattern = "\S+@\S+"
-        user_result = re.findall(user_pattern, usrname)
-        pass_pattern = "^.*(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"
-        pass_result = re.findall(pass_pattern, passwd)
-        if (user_result) and (pass_result):
+        username_pattern = "\S+@\S+"
+        username_result = re.findall(username_pattern, username)
+        password_pattern = "^.*(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"
+        password_result = re.findall(password_pattern, password)
+        if (username_result) and (password_result):
             EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
             EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
             msg = EmailMessage()
             msg['From'] = EMAIL_ADDRESS
-            msg['To'] = usrname    #  kumarraviranjan845@gmail.com
+            msg['To'] = username    
             msg['Subject'] = 'One Time Password (OTP)'
             msg.set_content(f'To authenticate, please use the following One Time Password (OTP): {random.randint(100000,999999)}')
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
@@ -47,7 +47,6 @@ def send_otp():
             delete_entries()
 
             messagebox.showinfo("Information", f"Dear user,\nOne Time Password (OTP) has been sent to your registerd Email-ID. Please check your Email.")
-
         else:
             messagebox.showwarning("Warning","Invalid Username or Password!!")
 
